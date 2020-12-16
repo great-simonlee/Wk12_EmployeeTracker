@@ -44,27 +44,66 @@ function main(res) {
     .then(function (answer) {
 
         switch (answer.main) {
+
             case "VIEW ALL EMPLOYEES":
                 conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id);", function(err, res) {
                     if (err) throw err;
                     // console.log(res);
-                    console.log("ID | Firstname | Lastname | Department");
-                    for (var i=0; i<res.length; i++) {
-                        console.log(res[i].id + " | " + 
-                                    res[i].first_name + " | " + 
-                                    res[i].last_name + " | " + 
-                                    res[i].title + " | " +
-                                    res[i].salary + " | " +
-                                    res[i].name);
-                    };
+                    printResult(res);
                 })
-                // console.log(res);
                 ems_init();
                 break;
+
             case "VIEW ALL EMPLOYEES BY DEPARTMENT":
-                function viewListByDepartment() {};
+                inquirer.prompt({
+                    name: "department",
+                    type: "list",
+                    message: "Which department are you looking for? ",
+                    choices: [
+                        "Development",
+                        "Finance",
+                        "Marketing",
+                        "Accounting"
+                    ]
+                }).then(function(data) {
+
+                    switch (data.department) {
+                        case "Development":
+                            conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id) WHERE name = 'Development';", function(err, res) {
+                                if (err) throw err;
+                                printResult(res);
+                            });
+                            ems_init();
+                            break;
+
+                        case "Finance":
+                            conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id) WHERE name = 'Finance';", function(err, res) {
+                                if (err) throw err;
+                                printResult(res);
+                            });
+                            ems_init();
+                            break;
+
+                        case "Marketing":
+                            conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id) WHERE name = 'Marketing';", function(err, res) {
+                                if (err) throw err;
+                                printResult(res);
+                            });
+                            ems_init();
+                            break;
+
+                        case "Accounting":
+                            conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id) WHERE name = 'Accounting';", function(err, res) {
+                                if (err) throw err;
+                                printResult(res);
+                            });
+                            ems_init();
+                            break;
+                    }
+                });
                 // main function
                 break;
+            
             case "VIEW ALL EMPLOYEES BY MANAGER":
                 function viewListByManager() {};
                 // main function
@@ -99,6 +138,19 @@ function viewList() {
         main(res);
     })
 };
+
+function printResult(res) {
+    console.log("ID | Firstname | Lastname | Title | Salary | Department");
+
+    for (var i=0; i<res.length; i++) {
+        console.log(res[i].id + " | " + 
+                    res[i].first_name + " | " + 
+                    res[i].last_name + " | " + 
+                    res[i].title + " | " +
+                    res[i].salary + " | " +
+                    res[i].name);
+    };
+}
 
 function viewListByDepartment() {};
 
