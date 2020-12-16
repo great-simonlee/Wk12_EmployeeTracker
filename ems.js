@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-const { CONNREFUSED } = require('dns');
+// const { CONNREFUSED } = require('dns');
 
 const conn = mysql.createConnection({
     host: "localhost",
@@ -27,7 +27,7 @@ function ems_init() {
 
 function main(res) {
     inquirer.prompt({
-        name: "root",
+        name: "main",
         type: "list",
         message: "||||   MAIN MENU   ||||",
         choices: [
@@ -37,8 +37,57 @@ function main(res) {
             "ADD AN EMPLOYEE",
             "REMOVE AN EMPLOYEE",
             "UPDATE EMPLOYEE ROLE",
-            "UPDATE EMPLOYEE MANAGER"
+            "UPDATE EMPLOYEE MANAGER",
+            "EXIT",
         ]
+    })
+    .then(function (answer) {
+        switch (answer.main) {
+            case "VIEW ALL EMPLOYEES":
+                function viewList() {};
+                // main function
+                break;
+            case "VIEW ALL EMPLOYEES BY DEPARTMENT":
+                function viewListByDepartment() {};
+                // main function
+                break;
+            case "VIEW ALL EMPLOYEES BY MANAGER":
+                function viewListByManager() {};
+                // main function
+                break;
+            case "ADD AN EMPLOYEE":
+                function addPerson() {};
+                // main function
+                break;
+            case "REMOVE AN EMPLOYEE":
+                function removePerson() {};
+                // main function
+                break;
+            case "UPDATE EMPLOYEE ROLE":
+                function updateRole() {};
+                // main function
+                break;
+            case "UPDATE EMPLOYEE MANAGER":
+                function udpateManager() {};
+                // main function
+                break;
+            case "EXIT":
+                conn.end();
+                break;
+        }
     });
-    conn.end();
 };
+
+function viewList() {};
+
+function viewListByDepartment() {};
+
+function viewListByManager() {};
+
+function addPerson() {};
+
+function removePerson() {};
+
+function updateRole() {};
+
+function udpateManager() {};
