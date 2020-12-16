@@ -45,13 +45,17 @@ function main(res) {
 
         switch (answer.main) {
             case "VIEW ALL EMPLOYEES":
-                for (var i=0; i<res.length; i++) {
-                    console.log(res[i].id + " | " + 
-                                res[i].first_name + " | " + 
-                                res[i].last_name + " | " + 
-                                res[i].role_id + " | " + 
-                                res[i].manager_id);
-                };
+                conn.query("SELECT employee.id, first_name, last_name, name FROM employee LEFT JOIN department ON employee.role_id = department.id; ", function(err, res) {
+                    if (err) throw err;
+                    // console.log(res);
+                    console.log("ID | Firstname | Lastname | Department");
+                    for (var i=0; i<res.length; i++) {
+                        console.log(res[i].id + " | " + 
+                                    res[i].first_name + " | " + 
+                                    res[i].last_name + " | " + 
+                                    res[i].name);
+                    };
+                })
                 // console.log(res);
                 ems_init();
                 break;
