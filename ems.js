@@ -19,7 +19,7 @@ conn.connect(function(err) {
 function ems_init() {
     conn.query("SELECT * FROM employee", function(err, res) {
         if (err) throw err;
-        console.log(res);
+        // console.log(res);
         main(res);
         // conn.end();
     })
@@ -42,10 +42,18 @@ function main(res) {
         ]
     })
     .then(function (answer) {
+
         switch (answer.main) {
             case "VIEW ALL EMPLOYEES":
-                function viewList() {};
-                // main function
+                for (var i=0; i<res.length; i++) {
+                    console.log(res[i].id + " | " + 
+                                res[i].first_name + " | " + 
+                                res[i].last_name + " | " + 
+                                res[i].role_id + " | " + 
+                                res[i].manager_id);
+                };
+                // console.log(res);
+                ems_init();
                 break;
             case "VIEW ALL EMPLOYEES BY DEPARTMENT":
                 function viewListByDepartment() {};
@@ -78,7 +86,13 @@ function main(res) {
     });
 };
 
-function viewList() {};
+function viewList() {
+    conn.query("SELECT * FROM employee", function(err, res) {
+        if (err) throw err;
+        console.log(res);
+        main(res);
+    })
+};
 
 function viewListByDepartment() {};
 
