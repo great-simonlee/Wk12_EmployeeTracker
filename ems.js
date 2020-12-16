@@ -45,7 +45,7 @@ function main(res) {
 
         switch (answer.main) {
             case "VIEW ALL EMPLOYEES":
-                conn.query("SELECT employee.id, first_name, last_name, name FROM employee LEFT JOIN department ON employee.role_id = department.id; ", function(err, res) {
+                conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id);", function(err, res) {
                     if (err) throw err;
                     // console.log(res);
                     console.log("ID | Firstname | Lastname | Department");
@@ -53,6 +53,8 @@ function main(res) {
                         console.log(res[i].id + " | " + 
                                     res[i].first_name + " | " + 
                                     res[i].last_name + " | " + 
+                                    res[i].title + " | " +
+                                    res[i].salary + " | " +
                                     res[i].name);
                     };
                 })
