@@ -35,8 +35,7 @@ function main(res) {
             "VIEW ALL EMPLOYEES BY DEPARTMENT",
             "ADD AN EMPLOYEE",
             "REMOVE AN EMPLOYEE",
-            "UPDATE EMPLOYEE ROLE",
-            "UPDATE EMPLOYEE MANAGER",
+            "UPDATE EMPLOYEE ROLE",,
             "EXIT",
         ]
     })
@@ -169,6 +168,7 @@ function main(res) {
                 });
                 // main function
                 break;
+
             case "REMOVE AN EMPLOYEE":
 
                 conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id);", function(err, res) {
@@ -186,41 +186,65 @@ function main(res) {
                             ems_init();
                         });
                     });
-
                 });
-
-                // .then(function(answ) {
-                //     inquirer.prompt({
-                //         name: "main",
-                //         type: "input",
-                //         message: "Please enter the employee's ID: "
-                //     }).then(function(){
-                //         //
-                //     })
-                // })
-                // main function
                 break;
+            
             case "UPDATE EMPLOYEE ROLE":
-                function updateRole() {};
+                conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id);", function(err, res) {
+                    if (err) throw err;
+                    printResult(res);
+
+                    inquirer.prompt([{                        
+                        name: "updateId",
+                        type: "input",
+                        message: "Which employee's role you want to change? "
+                    }, {
+                        name: "updateRole",
+                        type: "list",
+                        message: "Which role you want to change to? ",
+                        choices: [
+                            "Project Manager",
+                            "Developer",
+                            "Accountant",
+                            "Finance Manager",
+                            "Marketer"
+                        ]
+                    }]).then(function(ans) {
+                        console.log(ans);
+
+                        switch (ans.updateRole) {
+                            case "Project Manager":
+                                conn.query(`UPDATE employee SET role_id = 1 WHERE id = "${ans.updateId}"`, (e) => {if (err) throw err;})
+                                ems_init();
+                                break;
+                            case "Developer":
+                                conn.query(`UPDATE employee SET role_id = 2 WHERE id = "${ans.updateId}"`, (e) => {if (err) throw err;})
+                                ems_init();
+                                break;
+                            case "Accountant":
+                                conn.query(`UPDATE employee SET role_id = 3 WHERE id = "${ans.updateId}"`, (e) => {if (err) throw err;})
+                                ems_init();
+                                break;
+                            case "Finance Manager":
+                                conn.query(`UPDATE employee SET role_id = 4 WHERE id = "${ans.updateId}"`, (e) => {if (err) throw err;})
+                                ems_init();
+                                break;
+                            case "Marketer":
+                                conn.query(`UPDATE employee SET role_id = 5 WHERE id = "${ans.updateId}"`, (e) => {if (err) throw err;})
+                                ems_init();
+                                break;
+                        }
+
+                    });
+                });
                 // main function
                 break;
-            case "UPDATE EMPLOYEE MANAGER":
-                function udpateManager() {};
-                // main function
-                break;
+
             case "EXIT":
                 conn.end();
                 break;
         }
     });
-};
-
-function viewList() {
-    conn.query("SELECT * FROM employee", function(err, res) {
-        if (err) throw err;
-        console.log(res);
-        main(res);
-    })
 };
 
 function printResult(res) {
@@ -234,16 +258,4 @@ function printResult(res) {
                     res[i].salary + " | " +
                     res[i].name);
     };
-}
-
-function viewListByDepartment() {};
-
-function viewListByManager() {};
-
-function addPerson() {};
-
-function removePerson() {};
-
-function updateRole() {};
-
-function udpateManager() {};
+};
