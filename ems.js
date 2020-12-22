@@ -1,12 +1,13 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const { clear } = require('console');
 // const { CONNREFUSED } = require('dns');
 
 const conn = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "1234qwer",
+    password: "Simon0630!@#",
     database: "ems"
 });
 
@@ -44,6 +45,7 @@ function main(res) {
         switch (answer.main) {
 
             case "VIEW ALL EMPLOYEES":
+                clear();
                 conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id);", function(err, res) {
                     if (err) throw err;
                     // console.log(res);
@@ -53,6 +55,7 @@ function main(res) {
                 break;
 
             case "VIEW ALL EMPLOYEES BY DEPARTMENT":
+                clear();
                 inquirer.prompt({
                     name: "department",
                     type: "list",
@@ -103,6 +106,7 @@ function main(res) {
                 break;
             
             case "ADD AN EMPLOYEE":
+                clear();
                 inquirer.prompt([{
                     name: "first_name",
                     type: "input",
@@ -170,7 +174,7 @@ function main(res) {
                 break;
 
             case "REMOVE AN EMPLOYEE":
-
+                clear();
                 conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id);", function(err, res) {
                     if (err) throw err;
                     printResult(res);
@@ -190,6 +194,7 @@ function main(res) {
                 break;
             
             case "UPDATE EMPLOYEE ROLE":
+                clear();
                 conn.query("SELECT employee.id, first_name, last_name, title, salary, name FROM ((employee INNER JOIN roles ON employee.role_id = roles.id) INNER JOIN department ON employee.manager_id = department.id);", function(err, res) {
                     if (err) throw err;
                     printResult(res);
@@ -237,6 +242,7 @@ function main(res) {
 
                     });
                 });
+                clear();
                 // main function
                 break;
 
